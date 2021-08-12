@@ -23,36 +23,42 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      initContainers:
-        - name: chown
-          image: docker.io/library/busybox:1.33.1
-          imagePullPolicy: Always
-          command:
-            - "chown"
-            - "-Rc"
-            - "70:70"
-            - "/var/lib/postgresql"
-          volumeMounts:
-            - name: library
-              mountPath: /var/lib/postgresql
-            - name: library
-              mountPath: /var/lib/postgresql/data
-              subPath: data
-          securityContext:
-            runAsUser: 0
-            runAsGroup: 0
-            readOnlyRootFilesystem: true
-            allowPrivilegeEscalation: false
-            capabilities:
-              drop:
-                - ALL
-          resources:
-            requests:
-              cpu: "50m"
-              memory: "64Mi"
-            limits:
-              cpu: "50m"
-              memory: "64Mi"
+      securityContext:
+        runAsUser: 70
+        runAsGroup: 70
+        fsGroup: 70
+      # initContainers:
+      #   - name: chown
+      #     image: docker.io/library/busybox:1.33.1
+      #     imagePullPolicy: Always
+      #     command:
+      #       - "chown"
+      #       - "-Rc"
+      #       - "70:70"
+      #       - "/var/lib/postgresql"
+      #     volumeMounts:
+      #       - name: library
+      #         mountPath: /var/lib/postgresql
+      #       - name: library
+      #         mountPath: /var/lib/postgresql/data
+      #         subPath: data
+      #     securityContext:
+      #       runAsUser: 0
+      #       runAsGroup: 0
+      #       readOnlyRootFilesystem: true
+      #       allowPrivilegeEscalation: false
+      #       capabilities:
+      #         drop:
+      #           - ALL
+      #         add:
+      #           - CAP_CHOWN
+      #     resources:
+      #       requests:
+      #         cpu: "50m"
+      #         memory: "64Mi"
+      #       limits:
+      #         cpu: "50m"
+      #         memory: "64Mi"
       containers:
         - name: postgresql
           image: {{ .Values.postgresql.image }}
@@ -88,6 +94,8 @@ spec:
             capabilities:
               drop:
                 - ALL
+              add:
+                - CAP_CHOWN
       volumes:
         - name: run
           emptyDir: {}
