@@ -29,9 +29,10 @@ spec:
           image: docker.io/library/busybox:1.33.1
           imagePullPolicy: Always
           command:
-            - chown
-            - -Rc
-            - /var/lib/postgresql
+            - "chown"
+            - "-Rc"
+            - "70:70"
+            - "/var/lib/postgresql"
           volumeMounts:
             - name: library
               mountPath: /var/lib/postgresql
