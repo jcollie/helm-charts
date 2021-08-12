@@ -69,4 +69,4 @@ spec:
             name: {{ .Release.Name }}-initdb
         - name: library
           persistentVolumeClaim:
-            claimName: {{ .Release.Name }}-library-0
+            claimName: {{ .Release.Name }}-library
