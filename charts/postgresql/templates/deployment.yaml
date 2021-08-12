@@ -45,13 +45,10 @@ spec:
               mountPath: /docker-entrypoint-initdb.d
             - name: library
               mountPath: /var/lib/postgresql
+          {{- with .Values.postgresql.resources }}
           resources:
-            requests:
-              cpu: "1000m"
-              memory: "1Gi"
-            limits:
-              cpu: "1000m"
-              memory: "1Gi"
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           securityContext:
             runAsNonRoot: true
             readOnlyRootFilesystem: true
