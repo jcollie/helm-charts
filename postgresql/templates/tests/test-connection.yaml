@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ .Release.Name }}-test-connection"
+  annotations:
+    "helm.sh/hook": test
+spec:
+  {{- with .Values.imagePullSecrets }}
+  imagePullSecrets:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  containers:
+    - name: check
+      image: {{ .Values.postgresql.image }}
+      command:
+        - psql
+      args:
+        - --host=postgresql.{{ .Release.Namespace }}.svc
+        - --user=postgres
+        - --port=5432
+        - --command
+      env:
+        - name: PGPASSWORD
+          value: "{{ .Values.postgresql.password }}"
+  restartPolicy: Never

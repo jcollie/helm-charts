@@ -1,0 +1,49 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ .Release.Name }}-backup-full
+spec:
+  schedule: "0 9 * * 0"
+  concurrencyPolicy: Replace
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          name: {{ .Release.Name }}-backup-full
+          labels:
+            app: {{ .Release.Name }}
+            component: backup-full
+        spec:
+          serviceAccount: {{ .Release.Name }}-backup
+          restartPolicy: Never
+          {{- with .Values.imagePullSecrets }}
+          imagePullSecrets:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          containers:
+            - name: backup
+              image: {{ .Values.kubectl.image }}
+              imagePullPolicy: Always
+              command:
+                - "sh"
+                - "-e"
+                - "-c"
+                - |
+                  kubectl -n {{ .Release.Namespace }} get pods -l app={{ .Release.Name }},component=database
+                  POD=$(kubectl -n $NAMESPACE get pods -l app={{ .Release.Name }},component=database -o json | jq -r '.items[0].metadata.name')
+                  kubectl -n {{ .Release.Namespace }} exec $POD -c postgresql -- \
+                    /usr/bin/pgbackrest \
+                    --type=full \
+                    --start-fast \
+                    --stop-auto \
+                    backup
+              env:
+                - name: "TZ"
+                  value: "{{ .Values.timezone }}"
+              resources:
+                requests:
+                  cpu: 125m
+                  memory: 128Mi
+                limits:
+                  cpu: 125m
+                  memory: 128Mi
