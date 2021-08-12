@@ -95,7 +95,7 @@ spec:
               drop:
                 - ALL
               add:
-                - CAP_CHOWN
+                - CHOWN
       volumes:
         - name: run
           emptyDir: {}
