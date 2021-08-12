@@ -3,6 +3,16 @@ entries:
   postgresql:
   - apiVersion: v2
     appVersion: 0.0.1
+    created: "2021-08-12T06:09:04.264742196Z"
+    description: Simple, opinionated PostgreSQL chart.
+    digest: 5df89f1c7697180aa8929430e78311289091fbd74e558030083082816c492421
+    name: postgresql
+    type: application
+    urls:
+    - https://github.com/jcollie/helm-charts/releases/download/postgresql-0.0.5/postgresql-0.0.5.tgz
+    version: 0.0.5
+  - apiVersion: v2
+    appVersion: 0.0.1
     created: "2021-08-12T05:55:48.560965005Z"
     description: Simple, opinionated PostgreSQL chart.
     digest: 918394e93e87d80faa9784cacc87bf9af1fb58099953497d3c81b440c81af1f1
@@ -41,4 +51,4 @@ entries:
     urls:
     - https://github.com/jcollie/helm-charts/releases/download/postgresql-0.0.1/postgresql-0.0.1.tgz
     version: 0.0.1
-generated: "2021-08-12T05:55:48.560987406Z"
+generated: "2021-08-12T06:09:04.264766398Z"
