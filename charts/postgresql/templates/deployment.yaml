@@ -45,11 +45,6 @@ spec:
           securityContext:
             runAsUser: 0
             runAsGroup: 0
-            readOnlyRootFilesystem: true
-            allowPrivilegeEscalation: false
-            capabilities:
-              drop:
-                - ALL
           resources:
             requests:
               cpu: "50m"
