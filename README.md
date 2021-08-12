@@ -11,9 +11,9 @@ If you had already added this repo earlier, run `helm repo update` to retrieve
 the latest versions of the packages.  You can then run `helm search repo
 <alias>` to see the charts.
 
-To install the <chart-name>; chart:
+To install the <chart-name> chart:
 
-    helm install my-<chart-name> jcollie/<chart-name>;
+    helm install my-<chart-name> jcollie/<chart-name>
 
 To uninstall the chart:
 
