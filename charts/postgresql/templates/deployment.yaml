@@ -45,6 +45,9 @@ spec:
               mountPath: /docker-entrypoint-initdb.d
             - name: library
               mountPath: /var/lib/postgresql
+            - name: library
+              mountPath: /var/lib/postgresql/data
+              subPath: data
           {{- with .Values.postgresql.resources }}
           resources:
             {{- toYaml . | nindent 12 }}
