@@ -71,6 +71,10 @@ spec:
                 name: {{ .Release.Name }}-postgresql
             - secretRef:
                 name: {{ .Release.Name }}-pgbackrest
+          ports:
+            - name: postgresql
+              containerPort: 5432
+              protocol: TCP
           volumeMounts:
             - name: run
               mountPath: /run
