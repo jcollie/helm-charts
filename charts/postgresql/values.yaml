@@ -1,7 +1,7 @@
 timezone: "America/Chicago"
 
 postgresql:
-  image: ""
+  image: "ghcr.io/jcollie/postgresql:latest"
   password: "secret"
 
 pgbackrest:
@@ -34,7 +34,7 @@ pgbackrest:
       key: ""
 
 kubectl:
-  image: ""
+  image: "ghcr.io/jcollie/kubectl:latest"
 
 storageClassName: ""
 imagePullSecrets: []
