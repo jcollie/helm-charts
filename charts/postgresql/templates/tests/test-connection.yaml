@@ -18,7 +18,7 @@ spec:
         - --host=postgresql.{{ .Release.Namespace }}.svc
         - --user=postgres
         - --port=5432
-        - --command
+        - --command="SELECT 1;"
       env:
         - name: PGPASSWORD
           value: "{{ .Values.postgresql.password }}"
