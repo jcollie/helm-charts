@@ -15,14 +15,22 @@ pgbackrest:
     type: "s3"
     path: ""
     s3:
+      # name of the S3 bucket to use
       bucket: ""
+      # url of the S3 endpoint
       endpoint: ""
+      # S3 key
       key: ""
+      # S3 region
       region: ""
+      # S3 secret
       secret: ""
     azure:
+      # Azure account
       account: ""
+      # Azure container
       container: ""
+      # Azure key
       key: ""
 
 kubectl:
