@@ -23,10 +23,6 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      securityContext:
-        runAsUser: 70
-        runAsGroup: 70
-        fsGroup: 70
       initContainers:
         - name: chown
           image: docker.io/library/busybox:1.33.1
@@ -45,6 +41,11 @@ spec:
           securityContext:
             runAsUser: 0
             runAsGroup: 0
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
           resources:
             requests:
               cpu: "50m"
