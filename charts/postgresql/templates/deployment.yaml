@@ -47,12 +47,6 @@ spec:
             runAsGroup: 0
             readOnlyRootFilesystem: true
             allowPrivilegeEscalation: false
-            capabilities:
-              drop:
-                - ALL
-              add:
-                - CHOWN
-                - FOWNER
           resources:
             requests:
               cpu: "50m"
