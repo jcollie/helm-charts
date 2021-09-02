@@ -43,10 +43,18 @@ spec:
               mountPath: /var/lib/postgresql/data
               subPath: data
           securityContext:
-            runAsUser: 0
-            runAsGroup: 0
+            runAsUser: 70
+            runAsGroup: 70
             readOnlyRootFilesystem: true
             allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+              add:
+                - CHOWN
+                - FOWNER
+                - DAC_OVERRIDE
+                - DAC_READ_SEARCH
           resources:
             requests:
               cpu: "50m"
