@@ -35,9 +35,11 @@ spec:
             - "-e"
             - "-c"
             - |
-              chown -PRc 26:26 /var/lib/pgsql/13/data
-              chmod -Rc og= /var/lib/pgsql/13/data
+              chown -PRc 26:26 /var/lib/pgsql
+              chmod -Rc og= /var/lib/pgsql
           volumeMounts:
+            - name: varlibpgsql
+              mountPath: /var/lib/pgsql
             - name: data
               mountPath: /var/lib/pgsql/13/data
           securityContext:
@@ -73,6 +75,8 @@ spec:
               mountPath: /run
             - name: tmp
               mountPath: /tmp
+            - name: varlibpgsql
+              mountPath: /var/lib/pgsql
             - name: varrunpostgresql
               mountPath: /var/run/postgresql
             - name: data
@@ -92,6 +96,8 @@ spec:
         - name: run
           emptyDir: {}
         - name: tmp
+          emptyDir: {}
+        - name: varlibpgsql
           emptyDir: {}
         - name: varrunpostgresql
           emptyDir: {}
