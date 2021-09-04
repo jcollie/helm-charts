@@ -36,7 +36,7 @@ spec:
             - "-c"
             - |
               chown -PRc 26:26 /var/lib/pgsql/13/data
-              chmod -PRc og= /var/lib/pgsql/13/data
+              chmod -Rc og= /var/lib/pgsql/13/data
           volumeMounts:
             - name: data
               mountPath: /var/lib/pgsql/13/data
