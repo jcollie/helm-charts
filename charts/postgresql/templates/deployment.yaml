@@ -31,10 +31,12 @@ spec:
           image: docker.io/library/busybox:1.33.1
           imagePullPolicy: Always
           command:
-            - "chown"
-            - "-PRc"
-            - "26:26"
-            - "/var/lib/pgsql/13/data"
+            - "sh"
+            - "-e"
+            - "-c"
+            - |
+              chown -PRc 26:26 /var/lib/pgsql/13/data
+              chmod -PRc og= /var/lib/pgsql/13/data
           volumeMounts:
             - name: data
               mountPath: /var/lib/pgsql/13/data
