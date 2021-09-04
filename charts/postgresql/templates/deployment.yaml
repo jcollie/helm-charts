@@ -73,8 +73,8 @@ spec:
               mountPath: /run
             - name: tmp
               mountPath: /tmp
-            - name: varrun
-              mountPath: /var/run
+            - name: varrunpostgresql
+              mountPath: /var/run/postgresql
             - name: data
               mountPath: /var/lib/pgsql/13/data
           {{- with .Values.postgresql.resources }}
@@ -93,7 +93,7 @@ spec:
           emptyDir: {}
         - name: tmp
           emptyDir: {}
-        - name: varrun
+        - name: varrunpostgresql
           emptyDir: {}
         - name: data
           persistentVolumeClaim:
