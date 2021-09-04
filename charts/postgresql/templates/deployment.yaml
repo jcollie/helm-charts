@@ -26,6 +26,30 @@ spec:
         runAsUser: 26
         runAsGroup: 26
         fsGroup: 26
+      initContainers:
+        - name: chown
+          image: docker.io/library/busybox:1.33.1
+          imagePullPolicy: Always
+          command:
+            - "chown"
+            - "-PRc"
+            - "26:26"
+            - "/var/lib/pgsql/13/data"
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/pgsql/13/data
+          securityContext:
+            runAsUser: 0
+            runAsGroup: 0
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "64Mi"
+            limits:
+              cpu: "50m"
+              memory: "64Mi"
       containers:
         - name: postgresql
           image: {{ .Values.postgresql.image }}
