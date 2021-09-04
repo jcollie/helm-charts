@@ -29,13 +29,9 @@ spec:
                 - "-e"
                 - "-c"
                 - |
-                  kubectl --namespace {{ .Release.Namespace }} get pods --selector=app={{ .Release.Name }},component=database
                   POD=$(kubectl --namespace {{ .Release.Namespace }} get pods --selector=app={{ .Release.Name }},component=database -o json | jq -r '.items[0].metadata.name')
                   kubectl --namespace {{ .Release.Namespace }} exec $POD -c postgresql -- \
-                    ls -l /var/lib/postgresql/data/global/pg_control
-                  kubectl --namespace {{ .Release.Namespace }} exec $POD -c postgresql -- \
                     /usr/bin/pgbackrest \
-                    --log-level-console=detail \
                     --type=incr \
                     --start-fast \
                     --stop-auto \

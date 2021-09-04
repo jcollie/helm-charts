@@ -16,7 +16,6 @@ spec:
         app: {{ .Release.Name }}
         component: database
       annotations:
-        checksum/configmap: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
         checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
     spec:
       {{- with .Values.imagePullSecrets }}
@@ -24,36 +23,9 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       securityContext:
-        runAsUser: 70
-        runAsGroup: 70
-        fsGroup: 70
-      initContainers:
-        - name: chown
-          image: docker.io/library/busybox:1.33.1
-          imagePullPolicy: Always
-          command:
-            - "chown"
-            - "-PRc"
-            - "70:70"
-            - "/var/lib/postgresql"
-          volumeMounts:
-            - name: library
-              mountPath: /var/lib/postgresql
-            - name: library
-              mountPath: /var/lib/postgresql/data
-              subPath: data
-          securityContext:
-            runAsUser: 0
-            runAsGroup: 0
-            readOnlyRootFilesystem: true
-            allowPrivilegeEscalation: false
-          resources:
-            requests:
-              cpu: "50m"
-              memory: "64Mi"
-            limits:
-              cpu: "50m"
-              memory: "64Mi"
+        runAsUser: 26
+        runAsGroup: 26
+        fsGroup: 26
       containers:
         - name: postgresql
           image: {{ .Values.postgresql.image }}
@@ -75,13 +47,8 @@ spec:
               mountPath: /run
             - name: tmp
               mountPath: /tmp
-            - name: initdb
-              mountPath: /docker-entrypoint-initdb.d
-            - name: library
-              mountPath: /var/lib/postgresql
-            - name: library
-              mountPath: /var/lib/postgresql/data
-              subPath: data
+            - name: data
+              mountPath: /var/lib/pgsql/13/data
           {{- with .Values.postgresql.resources }}
           resources:
             {{- toYaml . | nindent 12 }}
@@ -98,9 +65,6 @@ spec:
           emptyDir: {}
         - name: tmp
           emptyDir: {}
-        - name: initdb
-          configMap:
-            name: {{ .Release.Name }}-initdb
-        - name: library
+        - name: data
           persistentVolumeClaim:
-            claimName: {{ .Release.Name }}-library
+            claimName: {{ .Release.Name }}-data
