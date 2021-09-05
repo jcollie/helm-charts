@@ -1,0 +1,14 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ .Release.Name }}-certificate
+spec:
+  secretName: {{ .Release.Name }}-certificate
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  dnsNames:
+    - {{ .Release.Name }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}
+{{ with .Values.extraDomains -}}
+{{- toYaml . | indent 4 -}}
+{{ end -}}

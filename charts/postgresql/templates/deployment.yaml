@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}
+  name: {{ .Release.Name }}-database
 spec:
   replicas: 1
   strategy:
@@ -27,7 +27,7 @@ spec:
         runAsGroup: 26
         fsGroup: 26
       initContainers:
-        - name: chown
+        - name: init
           image: docker.io/library/busybox:1.33.1
           imagePullPolicy: Always
           command:
@@ -37,6 +37,12 @@ spec:
             - |
               chown -PRc 26:26 /var/lib/pgsql
               chmod -Rc og= /var/lib/pgsql
+              sed -i -e "s@^#* *ssl *=.*\$@ssl = on@" "$PGDATA/postgresql.conf"
+              sed -i -e "s@^#* *ssl_cert_file *=.*\$@ssl_cert_file = '/cert/tls.crt'@" "$PGDATA/postgresql.conf"
+              sed -i -e "s@^#* *ssl_key_file *=.*\$@ssl_key_file = '/cert/tls.key'@" "$PGDATA/postgresql.conf"
+          envFrom:
+            - secretRef:
+                name: {{ .Release.Name }}-postgresql
           volumeMounts:
             - name: varlibpgsql
               mountPath: /var/lib/pgsql
@@ -81,6 +87,9 @@ spec:
               mountPath: /var/run/postgresql
             - name: data
               mountPath: /var/lib/pgsql/13/data
+            - name: cert
+              mountPath: /cert
+              readOnly: true
           {{- with .Values.postgresql.resources }}
           resources:
             {{- toYaml . | nindent 12 }}
@@ -104,3 +113,6 @@ spec:
         - name: data
           persistentVolumeClaim:
             claimName: {{ .Release.Name }}-data
+        - name: cert
+          secret:
+            secretName: {{ .Release.Name }}-certificate

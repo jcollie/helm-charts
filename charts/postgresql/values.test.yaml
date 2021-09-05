@@ -1,6 +1,8 @@
 timezone: "America/Chicago"
-clusterDomain: "cluster.local"
-extraDomains: []
+clusterDomain: "k8s.h2.ocj.io"
+extraDomains:
+  - pg13.ocjtech.us
+  - psql.ocj.io
 
 postgresql:
   image: "ghcr.io/jcollie/postgresql:latest"
