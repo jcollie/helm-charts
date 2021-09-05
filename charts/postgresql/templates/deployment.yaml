@@ -113,3 +113,4 @@ spec:
         - name: cert
           secret:
             secretName: {{ .Release.Name }}-certificate
+            defaultMode: 0640
