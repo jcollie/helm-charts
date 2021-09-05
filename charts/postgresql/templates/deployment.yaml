@@ -37,9 +37,6 @@ spec:
             - |
               chown -PRc 26:26 /var/lib/pgsql
               chmod -Rc og= /var/lib/pgsql
-              sed -i -e "s@^#* *ssl *=.*\$@ssl = on@" "$PGDATA/postgresql.conf"
-              sed -i -e "s@^#* *ssl_cert_file *=.*\$@ssl_cert_file = '/cert/tls.crt'@" "$PGDATA/postgresql.conf"
-              sed -i -e "s@^#* *ssl_key_file *=.*\$@ssl_key_file = '/cert/tls.key'@" "$PGDATA/postgresql.conf"
           envFrom:
             - secretRef:
                 name: {{ .Release.Name }}-postgresql
