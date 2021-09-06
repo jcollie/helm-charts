@@ -87,6 +87,7 @@ spec:
             - name: cert
               mountPath: /cert
               readOnly: true
+          terminationGracePeriod: 120
           {{- with .Values.postgresql.resources }}
           resources:
             {{- toYaml . | nindent 12 }}
