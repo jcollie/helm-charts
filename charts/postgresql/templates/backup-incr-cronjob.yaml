@@ -35,6 +35,7 @@ spec:
                     --type=incr \
                     --start-fast \
                     --stop-auto \
+                    --delta \
                     backup
               env:
                 - name: "TZ"
